@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>CafeBean</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6F4E37;
+            --secondary-color: #C4A57B;
+            --dark-color: #2C1810;
+            --light-color: #F5F2ED;
+            --accent-color: #D2691E;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .image-text {
+  padding: 20px;
+  border-radius: 0 0 20px 20px; /* matches image curve */
+  text-align: center;
+  color: white;
+  font-family: Georgia, Lucida Bright, Times, serif;
+}
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 70px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 5%;
+            background: linear-gradient(135deg, #F5F2ED 0%, #E8D5C4 100%);
+            position: relative;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-height: 400px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%236F4E37" width="400" height="300"/><circle cx="200" cy="150" r="80" fill="%23C4A57B"/><text x="200" y="160" font-family="Arial" font-size="20" fill="white" text-anchor="middle">Coffee Image</text></svg>') center/cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-left: 3rem;
+            animation: slideInFromRight 1.5s ease-out;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-text p {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            opacity: 0.9;
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            flex: 1;
+            min-height: 300px;
+            background: url("about\ coffee.jpeg") center/cover;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Shop Section */
+        .shop {
+            padding: 4rem 5%;
+            background: var(--light-color);
+        }
+
+        .shop h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            background-size: cover;
+            
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-rating {
+            color: gold;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .contact h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--light-color);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group input:invalid {
+            border-color: #ff6b6b;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-credits {
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .heart {
+            color: red;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--dark-color);
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                padding-left: 0;
+                margin-top: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text p {
+                font-size: 1.2rem;
+            }
+
+            .about-container {
+                flex-direction: column;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 1rem 3%;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .about-text h2,
+            .shop h2,
+            .contact h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact-form {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="logo"><i class="fa-regular fa-mug-hot" style="color: #ffffff;">CafeBean</i></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-image">
+  <img src="cafe.jpeg" 
+       alt="Coffee Image" 
+       style="width:100%; height:auto; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+
+  <div class="image-text">
+    <h2>Freshly Brewed Coffee</h2>
+    <p>Enjoy the perfect start to your day with our finest blends.</p>
+  </div>
+</div>
+
+
+        <div class="hero-text">
+            <h1>GIVE YOURSELF A REFRESHING START</h1>
+            <p>with our daily booster coffee</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="about-text">
+                <h2>About Us</h2>
+                <p>Welcome to CafeBean, where passion meets perfection in every cup. We source the finest coffee beans from around the world, carefully roasting them to bring out their unique flavors and aromas.</p>
+                <p>Our commitment to quality extends beyond our products. We believe in creating a warm, inviting atmosphere where coffee lovers can gather, connect, and enjoy the perfect brew. Whether you're a coffee connoisseur or just beginning your coffee journey, we have something special for you.</p>
+                <p>From classic espressos to innovative cold brews, our extensive menu caters to every taste preference. Experience the difference that dedication and expertise make in every sip.</p>
+            </div>
+            <div class="about-image">
+                <img src="about coffee.jpeg" alt="Coffee Beans" style="border-radius: 20px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="shop">
+        <h2>Our Premium Selection</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="espresso.jpeg" alt="Espresso Image" height= "100%"></div>
+                <div class="product-info">
+                    <h3 class="product-name">Classic Espresso</h3>
+                    <p class="product-price">$3.50</p>
+                    <div class="product-rating">★★★★★</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="cappuccino.jpeg" alt="Cappuccino Image" height="100%">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Cappuccino</h3>
+                    <p class="product-price">$4.25</p>
+                    <div class="product-rating">★★★★★</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="Latte.jpeg" alt="Latte Image" height= "100%"></div>
+                <div class="product-info">
+                    <h3 class="product-name">Caramel Latte</h3>
+                    <p class="product-price">$4.75</p>
+                    <div class="product-rating">★★★★☆</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="Americano.jpeg" alt="Americano Image" height="100%"></div>
+                <div class="product-info">
+                    <h3 class="product-name">Americano</h3>
+                    <p class="product-price">$3.25</p>
+                    <div class="product-rating">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Get In Touch</h2>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name *</label>
+                <input type="text" id="name" required placeholder="Your Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" required placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone *</label>
+                <input type="tel" id="phone" required placeholder="Your Phone Number">
+            </div>
+            <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea id="message" rows="5" required placeholder="Your message..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="www.linkedin.com/in/vrinda-sharma29">LinkedIn</a>
+            <a href="#" title="Telegram"> Telegram</a>
+            <a href="__vrinda_sharma__"> Instagram</a>
+        </div>
+        <p>&copy; 2024 CafeBean. All rights reserved.</p>
+        <p class="footer-credits">
+            MADE WITH <span class="heart">❤️</span> BY VRINDA SHARMA
+        </p>
+        <p>ENJOY YOUR COFFEE BREAK!!!</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu after clicking
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Form validation and submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get all form inputs
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+            
+            // Check if all fields are filled
+            if (name && email && phone && message) {
+                alert('Thank you for contacting us! We will get back to you soon.');
+                contactForm.reset();
+            } else {
+                alert('Please fill in all required fields before submitting.');
+            }
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
